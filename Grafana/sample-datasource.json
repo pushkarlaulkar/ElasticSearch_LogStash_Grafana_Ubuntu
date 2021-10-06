@@ -1,0 +1,15 @@
+{
+    "orgId": 1,
+    "name": "Sample",
+    "type": "elasticsearch",
+    "access": "proxy",
+    "url": "http://elasticsearch:9200",
+	"password":"",
+	"user":"",
+	"database":"sample-*",
+    "basicAuth": false,
+	"isDefault":true,
+    "version": 1,
+    "readOnly": false,
+    "jsonData":{"esVersion":"7.0.0","logLevelField":"","logMessageField":"","maxConcurrentShardRequests":5,"timeField":"Measurement Date"}
+}

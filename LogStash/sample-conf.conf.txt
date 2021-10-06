@@ -1,0 +1,47 @@
+input{
+file {
+    path => "/data/soapoutputs/BWVPN/*.csv"
+    start_position => "beginning"
+    sincedb_path => "/dev/null"
+        type => "vpn"
+    tags => [ "vpn" ]
+  }
+}
+filter{
+if [type] == "vpn" {
+        if "vpn" in [tags] {
+                csv {
+                separator => ","
+                                columns => ["Application Name","Cluster Name","Date","Total BW"]
+                skip_empty_columns => "true"
+      }
+      fingerprint {
+        source => "message"
+        target => "[@metadata][fingerprint]"
+        method => "MURMUR3"
+        }
+      date {
+        match => ["Date", "YYYY-MM-dd HH:mm"]
+        target => "Measurement Date"
+      }
+      mutate {
+        convert => {"Total BW" => "integer"}
+      }
+     }
+      if [Cluster Name] == "Cluster Name" and ["Application Name"] == "Application Name" and [Date] == "Date" and [Total BW]=="Total BW"{
+        drop { }
+        }
+ }
+}
+output{
+if [type] == "vpn" {
+        if "vpn" in [tags] {
+                  elasticsearch {
+                         hosts => "elasticsearch:9200"
+                         index => "appsvpn-%{+yyyy}"
+                         document_id => "%{[@metadata][fingerprint]}"
+                  }
+        #stdout {codec => rubydebug}
+        }
+    }
+}

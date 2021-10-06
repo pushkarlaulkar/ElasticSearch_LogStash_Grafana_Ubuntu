@@ -1,0 +1,24 @@
+version: '3'
+services:
+  elasticsearch:
+    container_name: elasticsearch
+    image: plaulkar/elasticsearch_logstash_grafana:elasticsearch
+    ports:
+      - "9200:9200"
+    command: ["/home/es/elasticsearch-7.13.3/bin/elasticsearch"]
+
+  logstash:
+    container_name: logstash
+    image: plaulkar/elasticsearch_logstash_grafana:logstash
+    depends_on:
+      - "elasticsearch"
+    command: ["./startup.sh"]
+  
+  grafana:
+    container_name: grafana
+    image: plaulkar/elasticsearch_logstash_grafana:grafana
+    depends_on:
+      - "elasticsearch"
+    ports:
+      - "3000:3000"
+    command: ["./startup.sh"]

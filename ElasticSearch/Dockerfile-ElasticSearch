@@ -1,0 +1,21 @@
+FROM ubuntu
+
+RUN apt-get update -y && apt-get upgrade -y
+
+RUN DEBIAN_FRONTEND="noninteractive" apt-get install curl openjdk-8-jdk vim apt-transport-https wget libdigest-sha-perl -y
+
+RUN useradd -ms /bin/bash es
+USER es
+WORKDIR /home/es
+
+EXPOSE 9200
+
+RUN wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.13.3-linux-x86_64.tar.gz
+RUN wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.13.3-linux-x86_64.tar.gz.sha512
+RUN shasum -a 512 -c elasticsearch-7.13.3-linux-x86_64.tar.gz.sha512
+RUN tar -xzf elasticsearch-7.13.3-linux-x86_64.tar.gz
+RUN rm elasticsearch-7.13.3-linux-x86_64.tar.gz
+
+COPY elasticsearch.yml elasticsearch-7.13.3/config/elasticsearch.yml
+
+CMD ["/home/es/elasticsearch-7.13.3/bin/elasticsearch"]
