@@ -5,6 +5,7 @@ services:
     image: plaulkar/elasticsearch_logstash_grafana:elasticsearch
     ports:
       - "9200:9200"
+    restart: always
     command: ["/home/es/elasticsearch-7.13.3/bin/elasticsearch"]
 
   logstash:
@@ -12,6 +13,7 @@ services:
     image: plaulkar/elasticsearch_logstash_grafana:logstash
     depends_on:
       - "elasticsearch"
+    restart: always
     command: ["./startup.sh"]
   
   grafana:
@@ -21,4 +23,5 @@ services:
       - "elasticsearch"
     ports:
       - "3000:3000"
+    restart: always
     command: ["./startup.sh"]
