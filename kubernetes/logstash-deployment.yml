@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+        name: logstash-deployment
+        labels:
+                app: logstash
+spec:
+        template:
+                metadata:
+                        name: logstash-deployment
+                        labels:
+                                app: logstash
+                spec:
+                        containers:
+                                - name: logstash
+                                  image: plaulkar/elasticsearch_logstash_grafana:logstash
+        selector:
+                matchLabels:
+                        app: logstash
