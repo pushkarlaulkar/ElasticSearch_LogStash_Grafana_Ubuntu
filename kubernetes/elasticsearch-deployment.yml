@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+        name: elasticsearch-deployment
+        labels:
+                app: elasticsearch
+spec:
+        template:
+                metadata:
+                        name: elasticsearch-deployment
+                        labels:
+                                app: elasticsearch
+                spec:
+                        containers:
+                                - name: elasticsearch
+                                  image: plaulkar/elasticsearch_logstash_grafana:elasticsearch
+        selector:
+                matchLabels:
+                        app: elasticsearch
